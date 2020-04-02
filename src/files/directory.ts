@@ -1,7 +1,7 @@
-import os from 'os';
-import {join} from "path"
-import {env, platform} from "process"
-import {hasAnyExtension, readDir, stat} from "../extensions/file";
+import os from "os";
+import { join } from "path";
+import { env, platform } from "process";
+import { hasAnyExtension, readDir, stat } from "../extensions/file";
 
 /**
  * Walks the given directory, and it's subdirectories and find
@@ -10,22 +10,26 @@ import {hasAnyExtension, readDir, stat} from "../extensions/file";
  *
  * @param fileList **recursive calls variable*8
  */
-export const walk = async (directory: string, extensions: string[] = [], fileList: string[] = []) => {
-    const files = await readDir(directory);
+export async function walk(
+  directory: string,
+  extensions: string[] = [],
+  fileList: string[] = []
+) {
+  const files = await readDir(directory);
 
-    for (const file of files) {
-        const details = await stat(join(directory, file));
-        if (details.isDirectory()) fileList = await walk(join(directory, file), extensions, fileList);
-        else {
-            if (extensions === null || hasAnyExtension(file, extensions)) {
-                fileList.push(join(directory, file));
-            }
-        }
+  for (const file of files) {
+    const details = await stat(join(directory, file));
+    if (details.isDirectory())
+      fileList = await walk(join(directory, file), extensions, fileList);
+    else {
+      if (extensions === null || hasAnyExtension(file, extensions)) {
+        fileList.push(join(directory, file));
+      }
     }
+  }
 
-    return fileList;
-};
-
+  return fileList;
+}
 
 /**
  * Get the full path to the app data directory
@@ -34,20 +38,23 @@ export const walk = async (directory: string, extensions: string[] = [], fileLis
  *
  * @return string The path to the app data directory
  */
-export const getAppDataDirectory = (append: string = ""): string => {
-    let data = "";
+export function getAppDataDirectory(append: string = ""): string {
+  let data = "";
 
-    switch (platform) {
-        case "win32":
-            data = env.APPDATA || join(os.homedir(), 'AppData', 'Roaming');
-            break;
-        case "darwin":
-            data = join(join(os.homedir(), 'Library'), 'Application Support', name);
-            break;
-        case "linux":
-            data = join(env.XDG_DATA_HOME || join(os.homedir(), '.local', 'share'), name);
-            break;
-    }
+  switch (platform) {
+    case "win32":
+      data = env.APPDATA || join(os.homedir(), "AppData", "Roaming");
+      break;
+    case "darwin":
+      data = join(join(os.homedir(), "Library"), "Application Support", name);
+      break;
+    case "linux":
+      data = join(
+        env.XDG_DATA_HOME || join(os.homedir(), ".local", "share"),
+        name
+      );
+      break;
+  }
 
-    return join(data, append);
-};
+  return join(data, append);
+}
