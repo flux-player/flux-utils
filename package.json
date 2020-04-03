@@ -7,7 +7,7 @@
   "author": "Melvin Mupondori",
   "license": "MIT",
   "types": "dist/index.d.ts",
-  "prepublish": "tsc",
+  "prepublish": "build",
   "scripts": {
     "build": "tsc --build tsconfig.json",
     "test": "jest --forceExit --coverage --verbose",
@@ -20,7 +20,5 @@
     "jest": "^24.9.0",
     "ts-jest": "^24.1.0"
   },
-  "dependencies": {
-
-  }
+  "dependencies": {}
 }

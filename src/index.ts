@@ -1,3 +1,10 @@
+// Export text utilities
+export {
+  stripIllegalCharacters,
+  bufferToString,
+  randomString
+} from "./utilities/text";
+
 // Export file utilities
 export {
   writeFile,
