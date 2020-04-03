@@ -6,7 +6,7 @@
   "repository": "https://github.com/flux-player/flux-utils.git",
   "author": "Melvin Mupondori",
   "license": "MIT",
-  "types": "dist/types.d.ts",
+  "types": "dist/index.d.ts",
   "prepublish": "tsc",
   "scripts": {
     "build": "tsc --build tsconfig.json",
