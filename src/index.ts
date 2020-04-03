@@ -15,6 +15,8 @@ export {
   hasAnyExtension
 } from "./extensions/file";
 
+export { default as BroadcastsEvents } from "./events/broadcasts"
+
 // Export configuration utilities
 export { env } from "./config/configuration";
 
