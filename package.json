@@ -14,6 +14,7 @@
     "lint": "tsc --noEmit && eslint \"**/*.{js,ts}\" --quiet --fix",
     "watch-test": "npm run test -- --watchAll"
   },
+  "publishConfig": { "registry": "https://npm.pkg.github.com/" },
   "devDependencies": {
     "@types/jest": "^25.1.4",
     "@types/node": "^13.9.2",
