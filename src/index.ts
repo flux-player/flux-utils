@@ -17,6 +17,8 @@ export {
 
 export { default as BroadcastsEvents } from "./events/broadcasts"
 
+export {default as EventBus} from "./events/bus"
+
 // Export configuration utilities
 export { env } from "./config/configuration";
 

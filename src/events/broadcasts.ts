@@ -19,7 +19,7 @@ export default abstract class BroadcastsEvents {
    * @param event The event to subscribe to
    * @param callable The callback to execute
    */
-  protected subscribeEvent(event: string, callable: Function) {
+  public subscribeEvent(event: string, callable: Function) {
     this.bus.listen(event, callable);
   }
 
