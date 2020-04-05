@@ -1,10 +1,18 @@
 export default class EventBus
 {
+    /**
+     * Collection of callbacks registered for all events added to the event bus
+     */
     private callbacks: any = {};
+
+    /**
+     * Temporary storage for the current event's data
+     */
     private eventData: any = null;
 
     /**
      * Add an event listener for the specified event
+     * 
      * @param event The unique identifier for the event
      * @param callable Callback for when the event is fired
      */
