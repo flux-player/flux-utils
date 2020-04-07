@@ -1,16 +1,26 @@
 import { log } from "../log/logger";
-import { randomString } from "../utilities/text";
+
+/**
+ * Defines the structure of the the callback collection
+ */
+export interface CallbackCollection {
+    [index: string]: Array<Function>;
+}
 
 export default class EventBus {
   /**
    * Collection of callbacks registered for all events added to the event bus
    */
-  private callbacks: any = {};
+  private callbacks: CallbackCollection = {};
 
   /**
    * Temporary storage for the current event's data
    */
   private eventData: any = null;
+
+  /**
+   * The last index
+   */
   private last: number = 0;
 
   /**
@@ -19,7 +29,7 @@ export default class EventBus {
    * @param event The unique identifier for the event
    * @param callable Callback for when the event is fired
    */
-  public listen(event: string, callable: Function) : number {
+  public listen(event: string, callable: Function): number {
     if (!this.callbacks.hasOwnProperty(event)) {
       Object.defineProperty(this.callbacks, event, { value: [] });
     }
@@ -29,12 +39,37 @@ export default class EventBus {
 
     // Push the new callback
     this.callbacks[event][index] = callable;
-    
+
     log("info", `Added a new event listener for event ${event}`);
 
     return index;
   }
 
+  /**
+   * Remove the specified listener for the specified event
+   * 
+   * @param event The event to remove a listener for
+   * @param id The ID of the listener to remove
+   */
+  public removeListener(event: string, id: Number) : boolean {
+    if (!this.hasListenersForEvent(event)) return false;
+
+    // Remove the listener at the specified event
+    this.callbacks[event] = this.callbacks[event].filter((_callback, index) => {
+        return id !== index;
+    });
+
+    return true;
+  }
+
+  /**
+   * Checks if the specified event has any listeners *kind of
+   * 
+   * @param event The event to check for
+   */
+  private hasListenersForEvent(event: string) : boolean {
+    return this.callbacks.hasOwnProperty(event);
+  }
 
   /**
    * Get the ID for the next callback
