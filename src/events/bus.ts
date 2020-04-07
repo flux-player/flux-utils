@@ -31,7 +31,7 @@ export default class EventBus {
    */
   public listen(event: string, callable: Function): number {
     if (!this.callbacks.hasOwnProperty(event)) {
-      Object.defineProperty(this.callbacks, event, { value: [] });
+      Object.defineProperty(this.callbacks, event, { value: [], writable: true });
     }
 
     // Generate random identifier for callback
@@ -40,7 +40,7 @@ export default class EventBus {
     // Push the new callback
     this.callbacks[event][index] = callable;
 
-    log("info", `Added a new event listener for event ${event}`);
+    log("info", `Registered event listener for event ${event} with ID ${index}`);
 
     return index;
   }
@@ -93,6 +93,8 @@ export default class EventBus {
     let callbacks: Function[] = this.callbacks.hasOwnProperty(event)
       ? this.callbacks[event]
       : [];
+
+      log("info", `Firing event ${event}. Executing ${callbacks.length} listeners`);
 
     // Set the data of the event to the data passed into the broadcast method
     this.eventData = data;
