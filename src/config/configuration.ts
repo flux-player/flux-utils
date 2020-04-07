@@ -5,5 +5,5 @@
  * @param _default
  */
 export function env(key: string, _default = null) {
-    return typeof process.env[key] ? process.env[key] : _default;
-};
+  return typeof process.env[key] ? process.env[key] : _default;
+}

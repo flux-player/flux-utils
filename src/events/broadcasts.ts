@@ -2,10 +2,10 @@ import EventBus from "./bus";
 
 export default abstract class BroadcastsEvents {
   private bus: EventBus;
-  
+
   /**
    * BroadcastsEvents constructor
-   * 
+   *
    * @param bus Optionally, you can pass an event bus to utilize, useful when you want to
    * have a global event bus
    */
@@ -15,7 +15,7 @@ export default abstract class BroadcastsEvents {
 
   /**
    * Subsribe to the specified event
-   * 
+   *
    * @param event The event to subscribe to
    * @param callable The callback to execute
    */
@@ -24,8 +24,8 @@ export default abstract class BroadcastsEvents {
   }
 
   /**
-   * Raise the specified event. 
-   * 
+   * Raise the specified event.
+   *
    * @param event The event to subscribe to
    * @param callable The callback to execute
    */
