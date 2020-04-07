@@ -81,10 +81,13 @@ export default class EventBus {
    * Get the ID for the next callback
    */
   private id(): number {
+    // Get the current index
     let value = this.last;
 
+    // Increment the index
     this.last++;
 
+    // Return the current index
     return value;
   }
 
@@ -95,7 +98,7 @@ export default class EventBus {
    * @param event The identifier of the event being fired
    * @param data Optional data to pass to the event callback(s)
    */
-  public async fire(event: string, data: any = null) {
+  public async fire(event: string, data: any = null): Promise<void> {
     let callbacks: Function[] = this.callbacks.hasOwnProperty(event)
       ? this.callbacks[event]
       : [];
@@ -125,7 +128,7 @@ export default class EventBus {
    *
    * @param callbacks
    */
-  private async execute(callbacks: Function[]) {
+  private async execute(callbacks: Function[]): Promise<void> {
     callbacks.forEach((callback) => callback(this.eventData));
   }
 }
