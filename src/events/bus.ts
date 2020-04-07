@@ -4,7 +4,7 @@ import { log } from "../log/logger";
  * Defines the structure of the the callback collection
  */
 export interface CallbackCollection {
-    [index: string]: Array<Function>;
+  [index: string]: Array<Function>;
 }
 
 export default class EventBus {
@@ -31,7 +31,10 @@ export default class EventBus {
    */
   public listen(event: string, callable: Function): number {
     if (!this.callbacks.hasOwnProperty(event)) {
-      Object.defineProperty(this.callbacks, event, { value: [], writable: true });
+      Object.defineProperty(this.callbacks, event, {
+        value: [],
+        writable: true,
+      });
     }
 
     // Generate random identifier for callback
@@ -40,23 +43,26 @@ export default class EventBus {
     // Push the new callback
     this.callbacks[event][index] = callable;
 
-    log("info", `Registered event listener for event ${event} with ID ${index}`);
+    log(
+      "info",
+      `Registered event listener for event ${event} with ID ${index}`
+    );
 
     return index;
   }
 
   /**
    * Remove the specified listener for the specified event
-   * 
+   *
    * @param event The event to remove a listener for
    * @param id The ID of the listener to remove
    */
-  public removeListener(event: string, id: Number) : boolean {
+  public removeListener(event: string, id: Number): boolean {
     if (!this.hasListenersForEvent(event)) return false;
 
     // Remove the listener at the specified event
     this.callbacks[event] = this.callbacks[event].filter((_callback, index) => {
-        return id !== index;
+      return id !== index;
     });
 
     return true;
@@ -64,10 +70,10 @@ export default class EventBus {
 
   /**
    * Checks if the specified event has any listeners *kind of
-   * 
+   *
    * @param event The event to check for
    */
-  private hasListenersForEvent(event: string) : boolean {
+  private hasListenersForEvent(event: string): boolean {
     return this.callbacks.hasOwnProperty(event);
   }
 
@@ -94,7 +100,13 @@ export default class EventBus {
       ? this.callbacks[event]
       : [];
 
-      log("info", `Firing event ${event}. Executing ${callbacks.length} listeners`);
+    // There's no listeners
+    if (!callbacks.length) return;
+
+    log(
+      "info",
+      `Firing event ${event}. Executing ${callbacks.length} listeners`
+    );
 
     // Set the data of the event to the data passed into the broadcast method
     this.eventData = data;
