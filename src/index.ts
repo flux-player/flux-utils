@@ -27,3 +27,5 @@ export { getAppDataDirectory, walk } from "./files/directory";
 
 // Export buffer utilities
 export { toArrayBuffer, readFileAsArrayBuffer } from "./extensions/buffer";
+
+export {log} from "./log/logger";
