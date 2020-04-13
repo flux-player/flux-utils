@@ -4,7 +4,12 @@ import { log } from "../log/logger";
  * Defines the structure of the the callback collection
  */
 export interface CallbackCollection {
-  [index: string]: Array<Function>;
+  [index: string]: Array<CallbackItem>;
+}
+
+export interface CallbackItem {
+  id: Number,
+  callback: Function
 }
 
 export default class EventBus {
@@ -41,7 +46,10 @@ export default class EventBus {
     let index = this.id();
 
     // Push the new callback
-    this.callbacks[event][index] = callable;
+    this.callbacks[event].push({
+      id: index,
+      callback: callable
+    });
 
     log(
       "info",
@@ -61,8 +69,8 @@ export default class EventBus {
     if (!this.hasListenersForEvent(event)) return false;
 
     // Remove the listener at the specified event
-    this.callbacks[event] = this.callbacks[event].filter((_callback, index) => {
-      return id !== index;
+    this.callbacks[event] = this.callbacks[event].filter((callback) => {
+      return id !== callback.id;
     });
 
     return true;
@@ -99,7 +107,7 @@ export default class EventBus {
    * @param data Optional data to pass to the event callback(s)
    */
   public async fire(event: string, data: any = null): Promise<void> {
-    let callbacks: Function[] = this.callbacks.hasOwnProperty(event)
+    let callbacks: CallbackItem[] = this.callbacks.hasOwnProperty(event)
       ? this.callbacks[event]
       : [];
 
@@ -128,7 +136,7 @@ export default class EventBus {
    *
    * @param callbacks
    */
-  private async execute(callbacks: Function[]): Promise<void> {
-    callbacks.forEach((callback) => callback(this.eventData));
+  private async execute(callbacks: CallbackItem[]): Promise<void> {
+    callbacks.forEach((item) => item.callback(this.eventData));
   }
 }
