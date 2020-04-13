@@ -1,7 +1,7 @@
 import os from "os";
 import { join } from "path";
 import { env, platform } from "process";
-import { hasAnyExtension, readDir, stat } from "../extensions/file";
+import { hasAnyExtension, readDir, stat, ensureFilePathExists } from "../extensions/file";
 
 /**
  * Walks the given directory, and it's subdirectories and find
@@ -57,4 +57,17 @@ export function getAppDataDirectory(append: string = ""): string {
   }
 
   return join(data, append);
+}
+
+/**
+ * Get the full path to the application root directory
+ * 
+ * @param path 
+ */
+export async function getAppRootDirectory(path: string) : Promise<string> {
+  let directory = getAppDataDirectory("Flux Player");
+
+  await ensureFilePathExists(directory);
+
+  return join(directory, path);
 }
