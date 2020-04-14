@@ -135,7 +135,7 @@ export default class EventBus {
     await this.execute(callbacks);
 
     // Execute all global callbacks
-    await this.executeGlobals();
+    await this.executeGlobals(event);
 
     // Reset event data to null (so we don't get spillover of data between events)
     this.eventData = null;
@@ -159,10 +159,10 @@ export default class EventBus {
    *
    * @param callbacks
    */
-  private async executeGlobals(): Promise<void> {
+  private async executeGlobals(event: string): Promise<void> {
     for (const key in this.globals) {
       if (this.globals.hasOwnProperty(key)) {
-        this.globals[key].callback(this.eventData);
+        this.globals[key].callback(event, this.eventData);
       }
     }
   }
