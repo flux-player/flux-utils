@@ -22,6 +22,9 @@ export default class EventBus {
    */
   private callbacks: CallbackCollection = {};
 
+  /**
+   * Collection of callbacks that are executed for all events (global callbacks)
+   */
   private globals: GlobalCallbackCollection = {};
 
   /**
