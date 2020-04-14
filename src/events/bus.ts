@@ -115,7 +115,7 @@ export default class EventBus {
    * @param event The identifier of the event being fired
    * @param data Optional data to pass to the event callback(s)
    */
-  public async fire(event: string, data: any = null): Promise<void> {
+  public async fire(event: string, ...data: any): Promise<void> {
     let callbacks: CallbackItem[] = this.callbacks.hasOwnProperty(event)
       ? this.callbacks[event]
       : [];
@@ -149,7 +149,7 @@ export default class EventBus {
    * @param callbacks
    */
   private async execute(callbacks: CallbackItem[]): Promise<void> {
-    callbacks.forEach((item) => item.callback(this.eventData));
+    callbacks.forEach((item) => item.callback(...this.eventData));
   }
 
   /**
@@ -162,7 +162,7 @@ export default class EventBus {
   private async executeGlobals(event: string): Promise<void> {
     for (const key in this.globals) {
       if (this.globals.hasOwnProperty(key)) {
-        this.globals[key].callback(event, this.eventData);
+        this.globals[key].callback(event, ...this.eventData);
       }
     }
   }

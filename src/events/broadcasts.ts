@@ -29,7 +29,7 @@ export default abstract class BroadcastsEvents {
    * @param event The event to subscribe to
    * @param callable The callback to execute
    */
-  protected async raiseEvent(event: string, data: any = null) {
-    await this.bus.fire(event, data);
+  protected async raiseEvent(event: string, ...data: any) {
+    await this.bus.fire(event, ...data);
   }
 }
