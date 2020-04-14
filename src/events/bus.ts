@@ -7,9 +7,13 @@ export interface CallbackCollection {
   [index: string]: Array<CallbackItem>;
 }
 
+export interface GlobalCallbackCollection {
+  [index: number]: CallbackItem;
+}
+
 export interface CallbackItem {
-  id: Number,
-  callback: Function
+  id: Number;
+  callback: Function;
 }
 
 export default class EventBus {
@@ -17,6 +21,8 @@ export default class EventBus {
    * Collection of callbacks registered for all events added to the event bus
    */
   private callbacks: CallbackCollection = {};
+
+  private globals: GlobalCallbackCollection = {};
 
   /**
    * Temporary storage for the current event's data
@@ -48,7 +54,7 @@ export default class EventBus {
     // Push the new callback
     this.callbacks[event].push({
       id: index,
-      callback: callable
+      callback: callable,
     });
 
     log(
@@ -125,6 +131,9 @@ export default class EventBus {
     // Execute all the callbacks in parallel
     await this.execute(callbacks);
 
+    // Execute all global callbacks
+    await this.executeGlobals();
+
     // Reset event data to null (so we don't get spillover of data between events)
     this.eventData = null;
   }
@@ -138,5 +147,44 @@ export default class EventBus {
    */
   private async execute(callbacks: CallbackItem[]): Promise<void> {
     callbacks.forEach((item) => item.callback(this.eventData));
+  }
+
+  /**
+   * Executes the global callbacks passing in the events' data
+   *
+   * @todo Research if this is the only way
+   *
+   * @param callbacks
+   */
+  private async executeGlobals(): Promise<void> {
+    for (const key in this.globals) {
+      if (this.globals.hasOwnProperty(key)) {
+        this.globals[key].callback(this.eventData);
+      }
+    }
+  }
+
+  /**
+   * Register a global event listener. T
+   *
+   * My rationale for this is when we want to extend this event bus with a third party event
+   * system, you can use this method to register a listener that listens to every event and
+   * bypasses the event and it's data to the third party system
+   *
+   * For example in Vue.
+   *
+   * this.bus.extend((event, data) => this.$emit(event, data));
+   *
+   * @param callback
+   */
+  public extend(callback: Function): number {
+    let id = this.id();
+
+    this.globals[id] = {
+      id,
+      callback,
+    };
+
+    return id;
   }
 }
