@@ -23,7 +23,7 @@ export { default as BroadcastsEvents } from "./events/broadcasts";
 export { env } from "./config/configuration";
 
 // Export directory utilities
-export { getAppDataDirectory, walk } from "./files/directory";
+export { getAppDataDirectory, getAppRootDirectory, walk } from "./files/directory";
 
 // Export buffer utilities
 export { toArrayBuffer, readFileAsArrayBuffer } from "./extensions/buffer";
