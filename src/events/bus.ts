@@ -120,6 +120,12 @@ export default class EventBus {
       ? this.callbacks[event]
       : [];
 
+    // Set the data of the event to the data passed into the broadcast method
+    this.eventData = data;
+
+    // Execute all global callbacks
+    await this.executeGlobals(event);
+
     // There's no listeners
     if (!callbacks.length) return;
 
@@ -128,14 +134,8 @@ export default class EventBus {
       `Firing event ${event}. Executing ${callbacks.length} listeners`
     );
 
-    // Set the data of the event to the data passed into the broadcast method
-    this.eventData = data;
-
     // Execute all the callbacks in parallel
     await this.execute(callbacks);
-
-    // Execute all global callbacks
-    await this.executeGlobals(event);
 
     // Reset event data to null (so we don't get spillover of data between events)
     this.eventData = null;
