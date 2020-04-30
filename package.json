@@ -1,5 +1,5 @@
 {
-  "name": "@flux/utils",
+  "name": "@flux-player/utils",
   "version": "0.0.1",
   "description": "Flux Player Core Components - Utilities",
   "main": "dist/index.js",
