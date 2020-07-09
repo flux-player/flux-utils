@@ -1,4 +1,4 @@
-import { log } from "../log/logger";
+import { log } from "..";
 
 /**
  * Defines the structure of the the callback collection

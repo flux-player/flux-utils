@@ -1,7 +1,7 @@
 import os from "os";
 import { join } from "path";
 import { env, platform } from "process";
-import { hasAnyExtension, readDir, stat, ensureFilePathExists } from "../extensions/file";
+import { hasAnyExtension, readDir, stat, ensureFilePathExists } from "..";
 
 /**
  * Walks the given directory, and it's subdirectories and find
